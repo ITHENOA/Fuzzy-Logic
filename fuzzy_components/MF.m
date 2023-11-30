@@ -12,6 +12,8 @@
 %   1. MF('gauss',c,sigma).membership(x)
 %   2. MF.Gaussian(c,sigma).membership(x)
 
+
+
 % v1: Nov-25-2023
 % v2: Nov-29-2023
 
@@ -25,17 +27,17 @@ classdef MF
     methods
 
         function o = MF(type, varargin)
-            o.type = type;
-            o.par = varargin;
+            o.type = lower(type);
+            o.par = varargin;                
         end
 
         function m = membership(o,x)
-            switch lower(o.type)
+            switch o.type
                 case {'gaussian', 'gauss'}
                     c = o.par{1};
                     sigma = o.par{2};
                     m = exp( - ((x - c) / sigma) .^ 2);
-                case 'triangular'
+                case {'triangular', 'tri'}
                     a = o.par{1};
                     b = o.par{2};
                     c = o.par{3};
@@ -45,11 +47,11 @@ classdef MF
                     b = o.par{2};
                     c = o.par{3};
                     m = 1 / (1 + abs((x - c) / a) .^ (2 * b));
-                case 'sigmoidal'
+                case {'sigmoidal', 'sig'}
                     a = o.par{1};
                     c = o.par{2};
                     m = 1 / 1 + exp(- a * (x - c));
-                case 'trapzoidal'
+                case {'trapzoidal', 'trap'}
                     a = o.par{1};
                     b = o.par{2};
                     c = o.par{3};
@@ -65,28 +67,39 @@ classdef MF
                         m = exp(- abs((x - c) / beta) ^ 3);
                     end
                 otherwise
-                    error('Enter correct MF type.')
+                    error("Enter correct MF type: {'gaussian','triangular','gbell','sigmoidal','trapzoidal','lr'}")
             end
         end
     end
 
     %%
     methods (Static)
+        % Gaussian
         function mf = Gaussian(c,sigma)
             mf = MF('Gaussian',c,sigma);
         end
+
+        % Triangular
         function mf = Triangular(a,b,c)
             mf = MF('Triangular',a,b,c);
         end
+
+        % Gbell
         function mf = Gbell(a,b,c)
             mf = MF('Gbell',a,b,c);
         end
+
+        % Sigmoidal
         function mf = Sigmoidal(a,c)
             mf = MF('Sigmoidal',a,c);
         end
+
+        % Trapzoidal
         function mf = Trapzoidal(a,b,c,d)
             mf = MF('Trapzoidal',a,b,c,d);
         end
+        
+        % LR
         function mf = LR(c,alpha,beta)
             mf = MF('LR',c,alpha,beta);
         end

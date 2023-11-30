@@ -5,10 +5,10 @@ y = -10:.1:30;
 sigma1 = 4;
 sigma2 = 6;
 %%
-A1 = MF('gauss',x,[6,sigma1]);
-A2 = MF('gauss',x,[10,sigma1]);
-B1 = MF('gauss',y,[6,sigma2]);
-B2 = MF('gauss',y,[12,sigma2]);
+A1 = MF('gauss',6,sigma1).membership(x);
+A2 = MF('gauss',10,sigma1).membership(x);
+B1 = MF('gauss',6,sigma2).membership(y);
+B2 = MF('gauss',12,sigma2).membership(y);
 
 %% a)
 [ceA1,ceB1] = meshgrid(A1,B1);

@@ -13,25 +13,26 @@ classdef Tnorm
     end
 
     methods
-        function o = Tnorm(type,a,b,parameter)
+        % function o = Tnorm(type,a,b,parameter)
+        function o = Tnorm(type,varargin)
             switch lower(type)
-                case 'min'
-                    o.value = Tnorm.Min(a,b);
+                % case 'min'
+                %     o.value = Tnorm.Min(a,b);
                 case {'alg', 'algebraic'}
-                    o.value = Tnorm.Algebraic(a,b);
-                case 'enistein'
-                    o.value = Tnorm.Enistein(a,b);
-                case 'yager'
-                    if nargin<4; error('Yager class need parameter(w)'); end
-                    o.value = Tnorm.Yager(a,b,parameter);
-                case 'dunios'
-                    if nargin<4; error('Dubois-Prade class need parameter(alpha)'); end
-                    o.value = Tnorm.Dunios(a,b,parameter);
-                case 'dombi'
-                    if nargin<4; error('Dombi class need parameter(lambda)'); end
-                    o.value = Tnorm.Dombi(a,b,parameter);
-                case 'drastic'
-                    o.value = Tnorm.Drastic(a,b);
+                    o.value = Tnorm.Algebraic(varargin);
+                % case 'enistein'
+                %     o.value = Tnorm.Enistein(a,b);
+                % case 'yager'
+                %     if nargin<4; error('Yager class need parameter(w)'); end
+                %     o.value = Tnorm.Yager(a,b,parameter);
+                % case 'dunios'
+                %     if nargin<4; error('Dubois-Prade class need parameter(alpha)'); end
+                %     o.value = Tnorm.Dunios(a,b,parameter);
+                % case 'dombi'
+                %     if nargin<4; error('Dombi class need parameter(lambda)'); end
+                %     o.value = Tnorm.Dombi(a,b,parameter);
+                % case 'drastic'
+                %     o.value = Tnorm.Drastic(a,b);
                 otherwise
                     error('Enter correct Tnorm name.')
             end
@@ -45,8 +46,12 @@ classdef Tnorm
         end
 
         %% Algebraic product
-        function t = Algebraic(a,b)
-            t = a .* b;
+        function t = Algebraic(varargin)
+            % t = a .* b;
+            t = ones(size(varargin{1}));
+            for i = varargin
+                t = t .* cell2mat(i);
+            end
         end
 
         %% Enistein product

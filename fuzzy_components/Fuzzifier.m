@@ -1,28 +1,36 @@
 %% Fuzzifier
 
 % usage
-%   1. Fuzzifier(U).Singleton(x)
+%   1. Fuzzifier(U).get_all(x, gauss_sigma, tri_a, tri_c)
+%   2. Fuzzifier(U).Singleton(x)
 %           >> fuzfiObj = Fuzzifier(U);
 %           >> fuzfiObj.Singleton(x)
 %           >> fuzfiObj.Gaussian(x)
+%           >> fuzfiObj.get_all(x, gauss_sigma, tri_a, tri_c)
 %
-%   2. Fuzzifier(U,'single').set(x)
+%   3. Fuzzifier(U,'single').set(x)
 %           >> singObj = Fuzzifier(U,'single');
 %           >> singOnj.set(x1)
 %           >> singOnj.set(x2)
 %
-%   3. Fuzzifier(U,'single',4).value
+%   4. Fuzzifier(U,'single',4).value
 
 % v1 Nov-29-2023
+% Nov-30-2023 +(get_all)
 
 classdef Fuzzifier
     properties
         value
         type
         U
+        singleton
+        gaussian
+        triangular
     end
 
     methods
+
+        % Constructor Function
         function o = Fuzzifier(U,type,x,varargin)
             o.U = U;
             if nargin == 2
@@ -43,6 +51,9 @@ classdef Fuzzifier
             end
         end
 
+        %% (for two input: Fuzzifier(U,type))
+
+        % set specific x 
         function f = set(o,x,parameter)
             switch lower(o.type)
                 case {'singleton', 'single'}
@@ -56,6 +67,15 @@ classdef Fuzzifier
                 otherwise
                     error('Enter correct type name')
             end
+        end
+
+        %% (for one input: Fuzzifier(U))
+
+        % Get all fuzzifier 
+        function o = get_all(o,x,gauss_sigma,tri_a,tri_c)
+            o.singleton = Singleton(o,x);
+            o.gaussian = Gaussian(o,x,gauss_sigma);
+            o.triangular = Triangular(o,x,tri_a,tri_c);
         end
 
         function f = Singleton(o,x)
