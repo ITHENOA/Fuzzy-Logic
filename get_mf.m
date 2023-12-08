@@ -37,11 +37,11 @@ classdef get_mf
             % for dim = 1:size(x,1)
                 for part = 1:obj.n_mf
                     if part == 1
-                        mf(:,part) = MF.tri(x, obj.xbar(1), obj.xbar(1), obj.xbar(2));
+                        mf(:,part) = MF.Triangular(obj.xbar(1), obj.xbar(1), obj.xbar(2)).membership(x);
                     elseif part == obj.n_mf
-                        mf(:,part) = MF.tri(x, obj.xbar(end-1), obj.xbar(end), obj.xbar(end));
+                        mf(:,part) = MF.Triangular(obj.xbar(end-1), obj.xbar(end), obj.xbar(end)).membership(x);
                     else
-                        mf(:,part) = MF.tri(x, obj.xbar(part-1), obj.xbar(part), obj.xbar(part+1));
+                        mf(:,part) = MF.Triangular(obj.xbar(part-1), obj.xbar(part), obj.xbar(part+1)).membership(x);
                     end
                 end
             % end
