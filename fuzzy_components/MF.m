@@ -81,6 +81,15 @@ classdef MF
 
         % Triangular
         function mf = Triangular(a,b,c)
+            if nargin == 1
+                if numel(a) == 3
+                    c = a(3);
+                    b = a(2);
+                    a = a(1);
+                else
+                    error('Enter Correct Inputs: (a,b,c) or ([a,b,c])')
+                end
+            end
             mf = MF('Triangular',a,b,c);
         end
 
